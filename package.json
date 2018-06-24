@@ -24,8 +24,11 @@
         "start": "node ."
     },
     "dependencies": {
-        "osc": "2.2.1",
         "express": "4.16.3",
+        "lodash": "^4.17.10",
+        "midi-clock": "0.0.1",
+        "node-watch": "^0.5.8",
+        "osc": "2.2.1",
         "ws": "5.1.1"
     }
 }
