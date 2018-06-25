@@ -35,9 +35,9 @@ const sendMIDIBeat = async (socket) => {
 
 const readFileChanges = async (socket) => {
     if (isEmpty(fileChangesHashMap)) return;
-    console.log('READING CHANGES', fileChangesHashMap);
     const packets = [];
     for (let f in fileChangesHashMap) {
+        console.log('Detected change in ', f);
         packets.push({
             address: `/buffer/${f}`,
         })
@@ -67,6 +67,12 @@ const startClock = (c) => {
     clockIsRunning = true;
 }
 
+const updateBpm = (c, bpm) => {
+    if (c && clockIsRunning) {
+        c.setTempo(bpm);
+    }
+}
+
 // Bind to a UDP socket to listen for incoming OSC events.
 const udpPort = new osc.UDPPort({
     localAddress: '0.0.0.0',
@@ -93,6 +99,7 @@ const wss = new WebSocket.Server({
         server: server
     });
 
+app.use(express.json()); // Support JSON post body
 app.use('/', express.static(appResources));
 app.use('/node_modules/', express.static(nodeModules));
 app.post('/startClock', (req, res) => {
@@ -102,6 +109,13 @@ app.post('/startClock', (req, res) => {
 
 app.post('/stopClock', (req, res) => {
     stopClock(clock);
+    res.send('ok!');
+});
+
+app.post('/updateBpm', (req, res) => {
+    const { bpm } = req.body || {};
+    updateBpm(clock, bpm);
+    console.log('Tempo updated to: ', bpm);
     res.send('ok!');
 });
 

@@ -1,15 +1,34 @@
+// setTempo(120);
+
 var notes = [
-    120,
-    122,
-    124,
-    125,
-    127
+    'C4',
+    'D4',
+    'E4',
+    'F4',
+    'G4'
 ];
 
 var i = 0;
 
-function loop() {
-    playNote(notes[i] + 24);
+// TODO: make a general API here.
+async function loop(t) {
+    console.log('beat', t);
+    const outs = await getOutputs();
+    const tr = outs[2];
+    const synth = outs[3];
+
+    // Play scale
+    synth.playNote(notes[i], 1, { velocity: 0.9 })
+        .stopNote(notes[i], 1, { time: '+100' })
+
+    // Play kick beat
+    tr.playNote(36, 1, { velocity: 0.9 })
+        .stopNote(36, 1, { time: '+100' })
+
+    // Play hi-hats
+    tr.playNote(42, 1, { velocity: 0.9 })
+        .stopNote(42, 1, { time: '+100' });
+
     i++;
     if (i >= notes.length) {
         i = 0;
