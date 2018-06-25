@@ -29,7 +29,13 @@ const getIPAddresses = () => {
 
 const sendMIDIBeat = async (socket) => {
     socket.send({
-        address: '/midi/clock',
+        address: '/midi/beat',
+    });
+}
+
+const sendMIDITick = async (socket) => {
+    socket.send({
+        address: '/midi/tick',
     });
 }
 
@@ -132,6 +138,7 @@ wss.on('connection', (socket) => {
 
     const beatCallback = (position) => {
         const microPos = position % 24; // 24 ticks per event 
+        sendMIDITick(socketPort).catch((e) => unbindCallback());
         if (microPos === 0) {
             console.log('Beat: ', position / 24);
             // TODO: better handle closing of browser tabs

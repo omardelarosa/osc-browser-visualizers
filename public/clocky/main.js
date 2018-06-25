@@ -1,8 +1,18 @@
 var AudioContext = window.AudioContext || window.webkitAudioContext;
 var context = new AudioContext();
 
+let tick = 0;
+let T = 24; // Ticks in beat
+let sleeps = 0;
+
 function loop() {
-    console.log('Noop beat.');
+    // noop
+}
+
+function sleep(ticks) {
+    if (sleeps <= 0) {
+        sleeps = ticks;
+    }
 }
 
 function setTempo(bpm) {
@@ -30,6 +40,7 @@ const playNote = (n) => {
 
 const loadBuffer = (b) => {
     const $buffers = document.querySelectorAll('.buffer-script');
+    $buffers.forEach(b => b.remove());
     const $buffer = document.createElement('script');
     const ts = Date.now();
     $buffer.src = `/_buffers/${b}?${ts}`;
@@ -39,12 +50,41 @@ const loadBuffer = (b) => {
 
 // DATA container
 let data = [];
-let tick = 1;
 let avgGap = 0;
 let minLatency = 10;
 let lastBeat = 0;
 let lastTimeDelta = 0;
 let minDelta = 0;
+
+let beatCounter = 0;
+
+function doBeat() {
+    t2 = Date.now();
+    if (lastBeat === 0) {
+        lastBeat = t2;
+        loop();
+    } else {
+        const currentDelta = t2 - lastBeat;
+        const deltaDiff = currentDelta - lastTimeDelta;
+        lastTimeDelta = currentDelta;
+        const beat = t2 - lastBeat;
+        // decrement sleeps
+        if (sleeps > 0) {
+            sleeps -= 1;
+        } else if (deltaDiff < -10) {
+            // Ahead of time, schedule for later
+            setTimeout(() => loop(beat), deltaDiff * -1);
+        } else {
+            // behind time... TODO:
+            loop(beat);
+        }
+        lastBeat = t2;
+    }
+}
+
+function doTick() {
+    
+}
 
 // OSC.js stuff
 const handleMessage = (msg) => {
@@ -58,23 +98,15 @@ const handleMessage = (msg) => {
 
     // Message type 2
     if (msgParts[1] === 'midi') {
-        t2 = Date.now();
-        if (lastBeat === 0) {
-            lastBeat = t2;
-            loop();
-        } else {
-            const currentDelta = t2 - lastBeat;
-            const deltaDiff = currentDelta - lastTimeDelta;
-            lastTimeDelta = currentDelta;
-            const beat = t2 - lastBeat;
-            if (deltaDiff < -10) {
-                // Ahead of time, schedule for later
-                setTimeout(() => loop(beat), deltaDiff * -1);
-            } else {
-                // behind time... TODO:
-                loop(beat);
-            }
-            lastBeat = t2;
+
+        if (msgParts[2] === 'beat') {
+            console.log('beat', ++beatCounter);
+            // console.log('BEAT!');
+        }
+
+        if (msgParts[2] === 'tick') {
+            // console.log('tick', ++tick);
+            doBeat(tick);
         }
     }
 }
