@@ -1,19 +1,106 @@
 var AudioContext = window.AudioContext || window.webkitAudioContext;
 var context = new AudioContext();
 
+// Custom event dispatcher
+function Dispatcher(options) {
+    // TODO: do this without a DOM using EventEmitter
+    const target = document.createTextNode(null);
+
+    this.addEventListener = target.addEventListener.bind(target);
+    this.removeEventListener = target.removeEventListener.bind(target);
+    this.dispatchEvent = target.dispatchEvent.bind(target);
+
+    // Other constructor stuff...
+}
+
+let dispatcher = new Dispatcher();
+
+const handleTick = (ev) => {
+    const sequenceId = ev.detail.sequenceId;
+    // console.log('Sequence ID', sequenceId);
+    doBeat(sequenceId);
+}
+
+const handleBeat = (ev) => {
+    const sequenceId = ev.detail.sequenceId;
+    console.log('Beat Sequence ID', sequenceId);
+    drainRegisterLoopQueue();
+}
+
+dispatcher.addEventListener('tick', handleTick);
+dispatcher.addEventListener('beat', handleBeat);
+
 let tick = 0;
 let T = 24; // Ticks in beat
 let sleeps = 0;
 
-function loop() {
-    // noop
-}
+// TODO: make this flag "scoped" to each loop
+let loops = {};
 
-function sleep(ticks) {
-    if (sleeps <= 0) {
-        sleeps = ticks;
+class Loop {
+    constructor({ handler, name }) {
+        this.isSleeping = false;
+        this.lastTickCalled = -1;
+        this.handler = handler;
+        this.name = name;
+        this.ticksToSleep = -1;
+        // TODO: add clean up logic
+        this.isDead = false;
+    }
+
+    sleep(amount) {
+        this.ticksToSleep = amount;
+        this.isSleeping = true;
+        return new Promise((resolve, reject) => {
+
+        });
+    }
+
+    destroy() {
+        this.isDead = true;
+        this.handler = null;
+    }
+
+    run() {
+        // Decrementer must be at the begging to account for 0th tick in sleep cycle
+        this.ticksToSleep--;
+        if (this.ticksToSleep <= 0) {
+          this.isSleeping = false;
+        }
+
+        // Only call if not sleeping, not dead and has not been called this tick
+        if (!this.isSleeping && !this.isDead && this.lastTickCalled !== tick) {
+            this.lastTickCalled = tick;
+            this.handler(this);
+        }
     }
 }
+
+const newLoopsQueue = [];
+
+const drainRegisterLoopQueue = () => {
+    while (newLoopsQueue.length > 0) {
+        const { name, handler } = newLoopsQueue.pop();
+        // Cleanup if exists
+        if (loops[name]) {
+            const oldLoop = loops[name];
+            oldLoop.destroy();
+            delete loops[name];
+        }
+        loops[name] = new Loop({ name, handler });
+    }
+};
+
+// Registers loops
+function loop(name, handler) {
+    // Queue them up to be updated on the beat
+    newLoopsQueue.push({ name, handler });
+}
+
+// TODO: make sleep scoped to each loop
+// TODO: break this out into a primitive operation
+const sleep = (ticks) => new Promise(
+);
 
 function setTempo(bpm) {
     fetch('http://localhost:8081/updateBpm', {
@@ -28,7 +115,6 @@ function setTempo(bpm) {
 }
 
 const playNote = (n) => {
-    console.log('NOTE!', n);
     oscillator = context.createOscillator();
     oscillator.frequency.value = n;
     oscillator.connect(context.destination);
@@ -46,7 +132,17 @@ const loadBuffer = (b) => {
     $buffer.src = `/_buffers/${b}?${ts}`;
     $buffer.className = 'buffer-script';
     document.body.appendChild($buffer);
+    // Cancel any pending loop invokations
 }
+
+const processLoops = (t) => {
+    const start = Date.now();
+    // Limit duration of this invokation with timeout to preserve time
+    Object.keys(loops).forEach((loopName) => {
+        loops[loopName].run();
+    });
+    // console.log('process time: ', Date.now() - start);
+} 
 
 // DATA container
 let data = [];
@@ -62,7 +158,7 @@ function doBeat() {
     t2 = Date.now();
     if (lastBeat === 0) {
         lastBeat = t2;
-        loop();
+        processLoops(t2);
     } else {
         const currentDelta = t2 - lastBeat;
         const deltaDiff = currentDelta - lastTimeDelta;
@@ -73,10 +169,10 @@ function doBeat() {
             sleeps -= 1;
         } else if (deltaDiff < -10) {
             // Ahead of time, schedule for later
-            setTimeout(() => loop(beat), deltaDiff * -1);
+            setTimeout(() => processLoops(beat), deltaDiff * -1);
         } else {
             // behind time... TODO:
-            loop(beat);
+            processLoops(beat);
         }
         lastBeat = t2;
     }
@@ -85,6 +181,9 @@ function doBeat() {
 function doTick() {
     
 }
+
+
+// TODO: create central event dispatcher
 
 // OSC.js stuff
 const handleMessage = (msg) => {
@@ -100,13 +199,17 @@ const handleMessage = (msg) => {
     if (msgParts[1] === 'midi') {
 
         if (msgParts[2] === 'beat') {
-            console.log('beat', ++beatCounter);
-            // console.log('BEAT!');
+            beatCounter++;
+            // console.log('beat', ++beatCounter);
+            const evt = new CustomEvent('beat', { detail: { sequenceId: beatCounter } });
+            dispatcher.dispatchEvent(evt);
         }
 
         if (msgParts[2] === 'tick') {
+            const evt = new CustomEvent('tick', { detail: { sequenceId: ++tick } });
+            dispatcher.dispatchEvent(evt);
             // console.log('tick', ++tick);
-            doBeat(tick);
+            // doBeat(tick);
         }
     }
 }
@@ -134,7 +237,7 @@ window.initOSC = initOSC();
 
 // Additional code below
 
-const getOutputs = async () => {
+const getOutputs = () => {
     if (WebMidi.enabled) {
         return WebMidi.outputs;
     } else {
