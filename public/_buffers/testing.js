@@ -15,9 +15,9 @@ if (!window.pulse) {
 
 let c = (s) => s.replace(/\s/g,'').split('').map(Number);
 
-let kicks = c('1000 0010 0001 0010');
-let hats = c('1111 1111 1111 1111');
-let snares = c('0000 1000 0000 1000');
+let kicks =     c('1000 0010 0001 0010');
+let hats =      c('1111 1111 1111 1111');
+let snares =    c('0000 1000 0000 1000');
 
 loop('pulse', async (ctx) => {
     window.pulse++;
