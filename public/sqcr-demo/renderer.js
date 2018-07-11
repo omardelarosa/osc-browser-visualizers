@@ -11,7 +11,14 @@ module.exports = (locals, scripts, scriptTags) => `
         </head>
 
         <body>
-            SDASDASDASD
+        <pre>
+            ${locals.ASCII_TEXT}
+        </pre>
+        <div>
+            <a href="javascript:sqcr.start()">start</a>
+            <a href="javascript:sqcr.stop()">stop</a>
+        </div>
+ 
         </body>
     </html>
 `;
