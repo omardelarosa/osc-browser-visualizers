@@ -21,11 +21,17 @@
         "Flocking"
     ],
     "scripts": {
-        "start": "node ."
+        "start": "node .",
+        "start:sqcr-demo":
+            "sqcr public/sqcr-demo/buffers --config public/sqcr-demo/sqcr.json --path ."
     },
     "dependencies": {
-        "osc": "2.2.1",
         "express": "4.16.3",
+        "osc": "2.2.1",
+        "sqcr": "file:../sqcr",
+        "tonal": "^1.1.3",
+        "tone": "^0.12.80",
+        "webmidi": "^2.2.0",
         "ws": "5.1.1"
     }
 }
