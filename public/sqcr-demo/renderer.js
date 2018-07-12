@@ -40,7 +40,7 @@ module.exports = (locals, scripts, scriptTags) => `
                 <a href="javascript:sqcr.start()">start</a>
                 <a href="javascript:sqcr.stop()">stop</a>
             </div>
- 
+            <script>window.initViz()</script>
         </body>
     </html>
 `;

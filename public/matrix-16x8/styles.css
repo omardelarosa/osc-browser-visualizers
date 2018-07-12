@@ -34,7 +34,7 @@ div {
 }
 
 .colorize-0 {
-    background-color: red; 
+    background-color: red;
     /* filter: blur(2px); */
 }
 
@@ -56,4 +56,16 @@ div {
 .colorize-4 {
     background-color: pink;
     /* filter: blur(2px); */
+}
+
+.colorize-1.colorize-3 {
+    background-color: orange;
+}
+
+.colorize-2.colorize-3 {
+    background-color: yellow;
+}
+
+.colorize-4.colorize-1 {
+    background-color: teal;
 }

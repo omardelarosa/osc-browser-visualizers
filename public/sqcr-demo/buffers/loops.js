@@ -1,23 +1,55 @@
 // Edit this file while running the server to update loops in real time
 
+colorLoopMapping = {
+    synth: 3,
+    leadSynth: 1,
+    kicks: 2,
+    hats: 0,
+    snares: 4,
+};
+
 loop('synth', async ctx => {
     // // Update chord state
     chord = chords[next4()];
     const chr = notes.map(n => scale[n + chord]);
     chr.forEach(n => {
-        playInst(synth, n, 2 * 1000);
+        const dur = 2 * 1000;
+        playInst(synth, n, dur);
+        const scaleNote = scale.indexOf(n) % 8;
+        // Visualizer.blink(
+        //     `/blink/${scaleNote}/${pulse}/${colorLoopMapping[ctx.name]}/${dur}`,
+        // );
+        for (let i = 0; i < 16; i++) {
+            Visualizer.blink(
+                `/blink/${scaleNote}/${i}/${colorLoopMapping[ctx.name]}/${dur}`,
+            );
+        }
     });
 
     ctx.sleep((M / 1) * 2);
 });
 
 loop('leadSynth', async ctx => {
+    const pulse = beatFromTick(ctx.tick);
     const n = _sample(
         notes.map(n => {
             return scale[n + chord];
         }),
     );
+    const scaleNote = scale.indexOf(n) % 8;
+    Visualizer.blink(
+        `/blink/${scaleNote}/${pulse}/${colorLoopMapping[ctx.name]}/100`,
+    );
+    // console.log('N', scale.indexOf(n));
     playInst(leadSynth, n, 100);
+    ctx.sleep(T / 4);
+});
+
+loop('blinker', async ctx => {
+    const pulse = beatFromTick(ctx.tick);
+    for (let i = 0; i < 8; i++) {
+        Visualizer.blink(`/blink/${i}/${pulse}/0/${sqcr.tickToMS() * (T / 4)}`);
+    }
     ctx.sleep(T / 4);
 });
 
