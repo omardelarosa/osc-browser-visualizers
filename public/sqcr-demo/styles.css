@@ -1,1 +1,24 @@
 /** Add css here **/
+.X.videoContainer {
+    position: fixed;
+    min-width: 100%;
+    min-height: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.X.videoContainer iframe {
+    width: 1600px;
+    height: 100vh;
+}
+
+/* Add some content at the bottom of the video/page */
+.X.container {
+    position: fixed;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    opacity: 0.4;
+    color: #f1f1f1;
+    width: 100%;
+    padding: 20px;
+}

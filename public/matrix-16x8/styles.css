@@ -63,9 +63,13 @@ div {
 }
 
 .colorize-2.colorize-3 {
-    background-color: yellow;
+    background-color: green;
 }
 
 .colorize-4.colorize-1 {
     background-color: teal;
+}
+
+.colorize-2.colorize-1 {
+    background-color: orange;
 }

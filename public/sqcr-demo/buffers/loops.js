@@ -72,6 +72,11 @@ loop('hats', async ctx => {
 
     playInst(sampler, NOTE_HAT);
 
+    // Visualizer
+    for (let i = 0; i < 8; i++) {
+        Visualizer.blink(`/blink/${i}/${h_counter}/2/${sqcr.tickToMS() * t}`);
+    }
+
     if (h_counter >= max - 1) {
         MC.set('HATS');
         h_counter = 0;

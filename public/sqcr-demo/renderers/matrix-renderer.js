@@ -10,6 +10,12 @@ const makeRow = (cols, idx = 1) => {
     return `<div class="k-row r-${idx}">${colDivs.join('\n')}</div>`;
 };
 
+const makeVideoPlayer = () => `
+    <div class='videoContainer k-row'>
+        <iframe class="k-col k-c-1" src="https://www.youtube.com/embed/uxpDa-c-4Mc?autoplay=1&mute=1&start=46" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    </div>
+`;
+
 const makeGrid = (rows, cols) => {
     const rowsHTML = [];
 
@@ -35,6 +41,7 @@ module.exports = (locals, scripts, scriptTags) => `
         </head>
 
         <body>
+            ${'' && makeVideoPlayer()}
             ${makeGrid(8, 16)}
             <div>
                 <a href="javascript:sqcr.start()">start</a>
