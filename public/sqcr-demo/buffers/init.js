@@ -1,5 +1,30 @@
 setTempo(60);
 
+class MarkovChain {
+    constructor() {
+        this.S = {};
+        this.M = {};
+    }
+
+    create(key, markov = {}, state = 0) {
+        this.M[key] = markov;
+        this.S[key] = state;
+    }
+
+    get(key) {
+        return this.S[key];
+    }
+
+    set(key) {
+        const currState = this.get(key);
+        const newState = _sample(this.M[key][currState]);
+        this.S[key] = newState;
+        return newState;
+    }
+}
+
+MC = new MarkovChain();
+
 // Global pulse counter
 pulse = 0;
 
@@ -38,21 +63,25 @@ kick_pattern = _sample(kicks);
 
 hats = [
     [M / 16, 4],
-    // [M / 16, 4],
-    // [M / 16, 4],
-    // [M / 16, 4],
     [M / 12, 3],
-    [M / 32, 8],
-    // [M / 24, 6],
     [M / 24, 6],
-    [M / 48, 12],
-    [M / 64, 16],
+    [M / 32, 4],
+    [M / 48, 6],
+    [M / 64, 8],
 ];
 
-// Keeps track of hi-hat hits
-h_counter = 0;
+// Create markov chain for hats
+MC.create('HATS', {
+    '0': [0, 0, 0, 0, 0, 0, 1, 2, 3, 4],
+    '1': [0, 0, 0, 3],
+    '2': [0, 0, 0, 3],
+    '3': [2, 5],
+    '4': [2, 3, 4, 1],
+    '5': [3, 2, 4, 2, 2],
+});
 
-hats_pattern = _sample(hats);
+// Keeps track of hi-hat hits (or tick substate)
+h_counter = 0;
 
 snares = [
     fmt('0000 4000 0000 4000'),

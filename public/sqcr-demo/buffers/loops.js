@@ -66,20 +66,15 @@ loop('kicks', async ctx => {
 });
 
 loop('hats', async ctx => {
+    hats_pattern = hats[MC.get('HATS')];
     max = hats_pattern[1];
     t = hats_pattern[0];
-    if (h_counter >= max) {
-        hats_pattern = _sample(hats);
-        h_counter = 0;
-        t = hats_pattern[0];
-    }
 
     playInst(sampler, NOTE_HAT);
 
     if (h_counter >= max - 1) {
-        hats_pattern = _sample(hats);
+        MC.set('HATS');
         h_counter = 0;
-        t = hats_pattern[0];
     } else {
         h_counter++;
     }

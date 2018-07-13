@@ -11,5 +11,5 @@
         "/public/sqcr-demo/buffers/loops.js",
         "/public/sqcr-demo/visualizer.js"
     ],
-    "rendererPath": "public/sqcr-demo/renderer.js"
+    "rendererPath": "public/sqcr-demo/renderers/matrix-renderer.js"
 }
