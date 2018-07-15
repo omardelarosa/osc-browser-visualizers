@@ -22,10 +22,8 @@
     ],
     "scripts": {
         "start": "node .",
-        "start:sqcr-demo:matrix":
-            "sqcr public/sqcr-demo/buffers --config public/sqcr-demo/config/matrix.json --path .",
-        "start:sqcr-demo:slider":
-            "sqcr public/sqcr-demo/buffers --config public/sqcr-demo/config/presentation.json --path ."
+        "start:sqcr-demo:matrix": "sqcr public/sqcr-demo/buffers --config public/sqcr-demo/config/matrix.json --path .",
+        "start:sqcr-demo:slider": "sqcr public/sqcr-demo/buffers --config public/sqcr-demo/config/presentation.json --path ."
     },
     "dependencies": {
         "express": "4.16.3",

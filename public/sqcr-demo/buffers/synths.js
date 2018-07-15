@@ -25,6 +25,14 @@ synth = new Tone.PolySynth(6, Tone.Synth, {
         partials: [0, 2, 3, 4],
     },
 })
+    .set({
+        filter: {
+            type: 'highpass',
+        },
+        envelope: {
+            attack: 0.1,
+        },
+    })
     // .chain(tremolo, freeverb)
     .toMaster();
 
@@ -33,6 +41,14 @@ leadSynth = new Tone.PolySynth(6, Tone.Synth, {
         partials: [0, 2, 3, 4],
     },
 })
+    .set({
+        filter: {
+            type: 'highpass',
+        },
+        envelope: {
+            attack: 0.1,
+        },
+    })
     // .chain(delay, freeverb)
     // .connect(reverb)
     // .connect(feedbackDelay)
