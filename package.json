@@ -27,6 +27,7 @@
     },
     "dependencies": {
         "express": "4.16.3",
+        "meow": "^5.0.0",
         "osc": "2.2.1",
         "sqcr": "file:../sqcr",
         "tonal": "^1.1.3",

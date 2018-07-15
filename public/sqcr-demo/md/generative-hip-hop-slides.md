@@ -10,25 +10,45 @@ class: center, middle
 
 ---
 
+class: center, middle
+
+# Organized Sound Waves
+
+## (Technically)
+
+<img src="https://banner2.kisspng.com/20180406/wuw/kisspng-sine-wave-square-wave-waveform-sound-wave-5ac767ad185f97.7005774115230176450998.jpg" width=400 />
+
+---
+
+class: center, middle
+
+# Harmony & Rhythm:
+
+### The Preferred Abstration Layers of Music
+
+---
+
 # Harmony
 
--   **tone** - a unit of sound
+--
+
+-   **tone** - a unit of sound <img src="https://i.imgur.com/Oq5SzEq.png" width=300 />
 
 --
 
--   **scale** - a family of pitched tones
+-   **scale** - a ranked _Set_ of pitched tones <img src="https://i.imgur.com/mu2XHAd.png" width=300 />
 
 --
 
--   **melody** - a sequence of tones over time
+-   **melody** - a sequence of tones over time <img src="https://i.imgur.com/EJZeByT.png" width=300 />
 
 --
 
--   **chord** - a group of tones played in (or close to) unison
+-   **chord** - a group of tones played in (or close to) unison <img src="https://i.imgur.com/R1gBVQL.png" width=300 />
 
 --
 
--   **progression** - a sequence of chords over time
+-   **progression** - a sequence of chords over time <img src="https://i.imgur.com/QRjNIda.png" width=300 />
 
 ---
 
@@ -170,7 +190,7 @@ var G = {
 
 # Notes
 
-<iframe width="560" height="315" src="/public/graphs/index.html" frameborder="0"></iframe>
+<iframe width="560" height="315" src="/public/sqcr-demo/html/matrix-16x8.html" frameborder="0"></iframe>
 
 ---
 

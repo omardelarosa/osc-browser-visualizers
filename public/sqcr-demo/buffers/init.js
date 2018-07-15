@@ -1,4 +1,5 @@
 setTempo(60);
+sqcr.stop();
 
 class MarkovChain {
     constructor() {
