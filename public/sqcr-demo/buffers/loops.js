@@ -29,6 +29,8 @@ loop('synth', async ctx => {
     ctx.sleep((M / 1) * 2);
 });
 
+since = Date.now();
+
 loop('leadSynth', async ctx => {
     const pulse = beatFromTick(ctx.tick);
     const n = _sample(
@@ -36,6 +38,9 @@ loop('leadSynth', async ctx => {
             return scale[n + chord];
         }),
     );
+    const now = Date.now();
+    console.log('since', now - since);
+    since = now;
     const scaleNote = scale.indexOf(n) % 8;
     Visualizer.blink(
         `/blink/${scaleNote}/${pulse}/${colorLoopMapping[ctx.name]}/100`,

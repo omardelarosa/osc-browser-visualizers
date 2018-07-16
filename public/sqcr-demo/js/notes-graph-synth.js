@@ -3,7 +3,30 @@ var edges = null;
 var network = null;
 var selectedNodeId = 1;
 
+var note = null;
+var duration = 500;
+
 var NOTES = ['C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4'];
+
+function rand() {
+    return NOTES[Math.round(Math.random() * (NOTES.length - 1))];
+}
+
+var synth = new Tone.Synth({
+    oscillator: {
+        type: 'amtriangle',
+        harmonicity: 0.5,
+        modulationType: 'sine',
+    },
+    envelope: {
+        attackCurve: 'exponential',
+        attack: 0.05,
+        decay: 0.2,
+        sustain: 0.2,
+        release: 1.5,
+    },
+    portamento: 0.05,
+}).toMaster();
 
 var G = {
     '0': [0, 0, 2, 4],
@@ -111,4 +134,6 @@ network.selectNodes([MC.peekID()]);
 setInterval(() => {
     selectedNodeId = MC.nextID();
     network.selectNodes([selectedNodeId]);
-}, 1000);
+    note = NOTES[selectedNodeId];
+    synth.triggerAttackRelease(note, duration);
+}, 500);
