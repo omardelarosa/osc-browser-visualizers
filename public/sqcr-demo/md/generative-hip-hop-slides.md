@@ -79,7 +79,7 @@ iframeSelector: .scale-tones-graph-frame
 
 #### Markov Chaining of Tones in a Scale
 
-<iframe class="scale-tones-graph-frame" width="100%" height="100%" src="/blank.html" frameborder=0></iframe>
+<iframe class="scale-tones-graph-frame" width="100%" height="70%" src="/blank.html" frameborder=0></iframe>
 
 ---
 
@@ -91,7 +91,9 @@ class: center, middle
 
 _A Markov chain is "a stochastic model describing a sequence of possible events in which the probability of each event depends only on the state attained in the previous event"_
 
-## ![via Wikipedia](https://en.wikipedia.org/wiki/Markov_chain)
+[from Wikipedia](https://en.wikipedia.org/wiki/Markov_chain)
+
+---
 
 class: center, middle
 
@@ -208,7 +210,8 @@ iframeSelector: .frame-808
 
 ![](https://i.stack.imgur.com/DTE8c.png)
 
-### 1/16th note ticks (not great for hip hop)
+-   Observe: 1/16th note ticks
+-   Very manual
 
 ---
 
@@ -239,41 +242,74 @@ const cowbell = fmt('0000 0000 0000 01010');
 
 ---
 
-class: center, middle
+# Rhythm Notation
 
-# So what is music?
+#### Beat Grids as Lists of Words
 
----
-
-# Music is...
-
---
-
--   ## Lists
-
---
-
--   ## Time
-
---
-
--   ## State Changes
-
---
-
--   ## Markov Chains (I'll explain shortly.)
+```javascript
+const kick_patterns = [
+    fmt('1010 0010 0010 0010'),
+    fmt('1001 0001 0101 0010'),
+    fmt('1000 0101 0100 0010'),
+    fmt('1000 0010 0000 0100'),
+];
+```
 
 ---
 
 class: center, middle
 
-# Markov Chains
+# So ... Markov Chains
 
 ![](https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Markovkate_01.svg/220px-Markovkate_01.svg.png)
 
 ---
 
-### Markov Chain Implementation
+# Big Idea
+
+-   Tones, Melodies Chords, Beats, Measures, etc. can be thought of as "states"
+
+--
+
+-   Each new "state" depends on the previous state (i.e. randomly selecting states sounds pretty bad.)
+
+--
+
+-   We can describe how the states relate to each other as what the weighted probabilities are of one state transitioning into another.
+
+---
+
+class: center, top
+iframeURL: /public/sqcr-demo/html/notes-graph.html
+iframeSelector: .scale-tones-graph-frame2
+
+#### Markov Chaining of Tones in a Scale
+
+<iframe class="scale-tones-graph-frame2" width="100%" height="70%" src="/blank.html" frameborder=0></iframe>
+
+---
+
+class: center, top
+iframeURL: /public/sqcr-demo/html/chords-graph.html
+iframeSelector: .scale-chords-graph-frame
+
+#### Markov Chaining of Chords in a Scale
+
+<iframe class="scale-chords-graph-frame" width="100%" height="70%" src="/blank.html" frameborder=0></iframe>
+
+---
+
+class: center, top
+iframeURL: /public/sqcr-demo/html/beats-graph.html
+iframeSelector: .beats-graph-frame
+
+#### Markov Chaining of Beat Durations
+
+<iframe class="beats-graph-frame" width="100%" height="70%" src="/blank.html" frameborder=0></iframe>
+
+---
+
+### Simple Markov Chain Implementation
 
 ```javascript
 class MarkovChain {
