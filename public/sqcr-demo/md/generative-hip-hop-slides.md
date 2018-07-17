@@ -31,7 +31,7 @@ class: center, middle
 ---
 
 class: center, middle
-iframeURL: http://localhost:8081/public/sqcr-demo/html/random-tones.html
+iframeURL: /public/sqcr-demo/html/random-tones.html
 iframeSelector: .random-tones-frame
 
 ### Random Tone Frequencies
@@ -54,7 +54,7 @@ class: center, middle
 
 class: center, middle
 
-iframeURL: http://localhost:8081/public/sqcr-demo/html/scale-tones.html
+iframeURL: /public/sqcr-demo/html/scale-tones.html
 iframeSelector: .scale-tones-frame
 
 ### Random Tones from a Scale
@@ -89,11 +89,17 @@ class: center, middle
 
 ![](https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Markovkate_01.svg/220px-Markovkate_01.svg.png)
 
----
+_A Markov chain is "a stochastic model describing a sequence of possible events in which the probability of each event depends only on the state attained in the previous event"_
+
+## ![via Wikipedia](https://en.wikipedia.org/wiki/Markov_chain)
 
 class: center, middle
 
 ## What Does This Have To Do With HipHop?
+
+--
+
+#### (We'll get to that)
 
 ---
 
@@ -163,9 +169,27 @@ class: center, middle
 
 ---
 
+# Rhythm
+
+### Durations and Fractions
+
+-   Not all are multiples of 2.
+
+--
+
+-   Some interesting things happen when you mix up durations where the denominator of the fraction is a multiple of 3.
+
+--
+
+-   This happens a lot in hip hop beats.
+
+---
+
 class: middle, center
 
 # Rhythm and Computation
+
+### Quantization and Escaping The Grid
 
 ---
 
@@ -184,6 +208,8 @@ iframeSelector: .frame-808
 
 ![](https://i.stack.imgur.com/DTE8c.png)
 
+### 1/16th note ticks (not great for hip hop)
+
 ---
 
 # Rhythm as Code
@@ -191,6 +217,7 @@ iframeSelector: .frame-808
 #### Beat Grids as Code
 
 ```javascript
+// Sixteen-Element Bit Arrays
 const kicks = [1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0];
 const snares = [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0];
 const hats = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
@@ -214,7 +241,7 @@ const cowbell = fmt('0000 0000 0000 01010');
 
 class: center, middle
 
-# So what is Music?
+# So what is music?
 
 ---
 
@@ -234,7 +261,7 @@ class: center, middle
 
 --
 
--   ## Traversing a Directed (Often Cyclic) Graph
+-   ## Markov Chains (I'll explain shortly.)
 
 ---
 
