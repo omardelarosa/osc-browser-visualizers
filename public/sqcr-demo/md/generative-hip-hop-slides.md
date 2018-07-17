@@ -246,7 +246,7 @@ class: center, middle
 
 ---
 
-# Markov Chain Implementation
+### Markov Chain Implementation
 
 ```javascript
 class MarkovChain {
@@ -267,7 +267,7 @@ class MarkovChain {
     }
 
     sample(list) {
-        return list[parseInt(list.length * Math.random())];
+        return list[Math.floor(list.length * Math.random())];
     }
 }
 ```
