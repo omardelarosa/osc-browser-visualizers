@@ -265,20 +265,6 @@ class: center, middle
 
 ---
 
-# Big Idea
-
--   Tones, Melodies Chords, Beats, Measures, etc. can be thought of as "states"
-
---
-
--   Each new "state" depends on the previous state (i.e. randomly selecting states sounds pretty bad.)
-
---
-
--   We can describe how the states relate to each other as what the weighted probabilities are of one state transitioning into another.
-
----
-
 class: center, top
 iframeURL: /public/sqcr-demo/html/notes-graph.html
 iframeSelector: .scale-tones-graph-frame2
@@ -398,14 +384,20 @@ var G = {
 iframeURL: /public/sqcr-demo/html/matrix-16x8.html
 iframeSelector: .matrix-16x8
 
-# Generative Drake Remix Using Markov Chains
+# Markov Drake
 
 <iframe class="matrix-16x8" width="560" height="315" src="/blank.html" frameborder="0"></iframe>
 
 ---
 
-# Conclusion
+# And So...
 
--   Careful randomization
--   Embrace a little music theory
--   TBD
+-   Tones, Melodies Chords, Beats, Measures, etc. can be thought of as "states"
+
+--
+
+-   Each new "state" depends on the previous state (i.e. randomly selecting states sounds pretty bad.)
+
+--
+
+-   We can describe how the states relate to each other as what the weighted probabilities are of one state transitioning into another.
