@@ -6,6 +6,16 @@ colorLoopMapping = {
     snares: 4,
 };
 
+loop('levels', async ctx => {
+    LOOPS.forEach(l => {
+        // Update levels of each track
+        LEVELS[l] = MC_LEVELS.next();
+    });
+
+    // Every measure
+    ctx.sleep(M * 4);
+});
+
 loop('synth', async ctx => {
     // Update chord state
     chordId = MC_CHORDS.next();
@@ -25,7 +35,7 @@ loop('synth', async ctx => {
         }
     });
 
-    ctx.sleep((M / 1) * 2);
+    ctx.sleep((M / 1) * 1);
 });
 
 since = Date.now();
@@ -35,11 +45,16 @@ loop('leadSynth', async ctx => {
     const chordOffset = MC_CHORDS.peekID();
     const mNote = melody[pulse] + chordOffset;
     const scaleNote = scale[mNote]; // octave scaled
-    Visualizer.blink(
-        `/blink/${mNote % 8}/${pulse}/${colorLoopMapping[ctx.name]}/100`,
-    );
-    playInst(leadSynth, scaleNote, 100);
-    ctx.sleep(T / 4);
+    if (LEVELS[ctx.name]) {
+        Visualizer.blink(
+            `/blink/${mNote % 8}/${pulse}/${colorLoopMapping[ctx.name]}/100`,
+        );
+        playInst(leadSynth, scaleNote, 100);
+        ctx.sleep(T / 4);
+    } else {
+        playInst(leadSynth, scaleNote, 100);
+        ctx.sleep(T / 2);
+    }
 });
 
 loop('blinker', async ctx => {
@@ -67,6 +82,7 @@ loop('hats', async ctx => {
     max = hats_pattern[1];
     t = hats_pattern[0];
 
+    // Never muted
     playInst(sampler, NOTE_HAT);
 
     // Visualizer
@@ -88,9 +104,14 @@ loop('snares', async ctx => {
     const pulse = beatFromTick(ctx.tick);
     // // Switch pattern on the 0
     if (pulse % 8 === 0) MC_SNARES.next();
-    if (!MC_SNARES.peek()[pulse]) return ctx.sleep(T / 4);
+    if (!MC_SNARES.peek()[pulse] || !LEVELS[ctx.name]) return ctx.sleep(T / 4);
     playInst(sampler, NOTE_CLAP);
     ctx.sleep(T / 4);
+});
+
+loop('vocals', async ctx => {
+    playInst(sampler, _sample(DRAKE), 8 * 1000);
+    ctx.sleep(M * 4);
 });
 
 // Init dataviz

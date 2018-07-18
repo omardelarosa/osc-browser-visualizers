@@ -27,6 +27,25 @@ expectedMS = ticks => sqcr.tickToMS() * ticks;
 
 next4 = nextOf(4);
 
+LOOPS = ['synth', 'leadSynth', 'kicks', 'snares', 'hats', 'vocals'];
+LEVELS = {
+    synth: 1,
+    leadSynth: 1,
+    kicks: 1,
+    snares: 0,
+    hats: 1,
+    vocals: 1,
+};
+
+MC_LEVELS = new MarkovChain(
+    {
+        '1': [1, 1, 1, 0, 0],
+        '0': [0, 0, 1, 1, 1],
+    },
+    [1, 0],
+    1,
+);
+
 kicks = [
     fmt('4000 0000 0040 0000'),
     fmt('4020 0000 4000 0000'),
