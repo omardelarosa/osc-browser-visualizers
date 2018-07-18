@@ -67,9 +67,11 @@ class: center, middle
 
 ### Better.
 
---
+---
 
-#### But can we do a bit better.
+class: center, middle
+
+### We can do even better.
 
 ---
 
@@ -95,13 +97,35 @@ _A Markov chain is "a stochastic model describing a sequence of possible events 
 
 ---
 
-class: center, middle
+# Markov Chain
 
-## What Does This Have To Do With HipHop?
+-   Like a state machine for gamblers
 
 --
 
-#### (We'll get to that)
+-   Markov models can be "generated" ML-style from a corpus text (or a MIDI file)
+
+--
+
+-   Data can be represented easily as structured data formats such as JSON
+
+---
+
+class: center, middle
+
+# Not what this talk is about.
+
+#### (But consider that food for thought)
+
+---
+
+class: center, middle
+iframeURL: /public/sqcr-demo/html/808.html
+iframeSelector: .frame-808-geez
+
+## What Does This Have To Do With HipHop?
+
+<iframe src="/blank.html" width="0" height="0" class="frame-808-geez" frameborder="0"></iframe>
 
 ---
 
@@ -159,15 +183,15 @@ class: center, middle
 
 --
 
--   1/4 Note
+-   1/4 Note <img src="https://i.imgur.com/ChUoGvo.png" width=200 />
 
 --
 
--   1/8 Note
+-   1/8 Note <img src="https://i.imgur.com/E5SC08v.png" width=200 />
 
 --
 
--   1/16 Note
+-   1/16 Note <img src="https://i.imgur.com/ALcpf8n.png" width=200 />
 
 ---
 
@@ -181,9 +205,11 @@ class: center, middle
 
 -   Some interesting things happen when you mix up durations where the denominator of the fraction is a multiple of 3.
 
+-   <img src="https://i.imgur.com/OuujOEg.png" width=300 />
+
 --
 
--   This happens a lot in hip hop beats.
+-   This is common in hip hop beats.
 
 ---
 
@@ -210,8 +236,9 @@ iframeSelector: .frame-808
 
 ![](https://i.stack.imgur.com/DTE8c.png)
 
--   Observe: 1/16th note ticks
--   Very manual
+-   Centered around 1/16th note ticks
+
+-   Can be very manual and difficult to do programmatically.
 
 ---
 
@@ -220,10 +247,13 @@ iframeSelector: .frame-808
 #### Beat Grids as Code
 
 ```javascript
-// Sixteen-Element Bit Arrays
+// Sixteen-element arrays can represent rhythm patterns, but are tough to read.
 const kicks = [1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0];
+
 const snares = [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0];
+
 const hats = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
+
 const cowbell = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0];
 ```
 
@@ -234,6 +264,7 @@ const cowbell = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0];
 #### Beat Grids as "Words"
 
 ```javascript
+// Easier to read, CPU-trivial preprocessing
 const kicks = fmt('1010 0010 0010 0010');
 const snares = fmt('0000 1000 0000 1000');
 const hats = fmt('1111 1111 1111 1111');
@@ -244,9 +275,10 @@ const cowbell = fmt('0000 0000 0000 01010');
 
 # Rhythm Notation
 
-#### Beat Grids as Lists of Words
+#### Beat Grids as Lists of Words (a Language?)
 
 ```javascript
+// A list of patterns
 const kick_patterns = [
     fmt('1010 0010 0010 0010'),
     fmt('1001 0001 0101 0010'),
@@ -257,9 +289,54 @@ const kick_patterns = [
 
 ---
 
+## Generative Beats
+
+#### We could make two pattern sets
+
+```javascript
+const kick_patterns = [
+    fmt('1010 0010 0010 0010'),
+    fmt('1001 0001 0101 0010'),
+    fmt('1000 0101 0100 0010'),
+    fmt('1000 0010 0000 0100'),
+];
+
+const snare_patterns = [
+    fmt('0000 1000 0000 1000'),
+    fmt('0010 1000 0000 1010'),
+    fmt('0000 1000 0010 1000'),
+];
+```
+
+---
+
+## Generative Beats
+
+#### And randomly combine them
+
+```javascript
+const kicks_sequence = [
+    ..._.sample(kick_patterns),
+    ..._.sample(kick_patterns),
+    ..._.sample(kick_patterns),
+    ..._.sample(kick_patterns),
+];
+
+const snare_sequence = [
+    ..._.sample(snare_patterns),
+    ..._.sample(snare_patterns),
+    ..._.sample(snare_patterns),
+    ..._.sample(snare_patterns),
+];
+
+playParallel(kicks_sequence, snare_sequence);
+```
+
+---
+
 class: center, middle
 
-# So ... Markov Chains
+# Or we can do better with Markov Chains
 
 ![](https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Markovkate_01.svg/220px-Markovkate_01.svg.png)
 
@@ -323,16 +400,19 @@ class MarkovChain {
 
 ---
 
-# Markov Chain of Notes
+## Markov Chain of Notes
+
+-   Using an adjacency list instead of matrix (for readability, simplicity)
 
 ```javascript
 const NOTES = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
 
 const G = {
-    '0': [1, 1, 0, 3, 4, 5, 6], // Repeated values add "weight"
-    '1': [0, 0, 2, 3],
+    // Repeated notes represent higher probabilities
+    '0': [1, 1, 0, 3, 4, 5, 6], // 0 -> 1 is 2/7, the rest 1/7
+    '1': [0, 0, 2, 3], // 1 -> 0 is 1/2 the others 1/4
     '2': [1, 3, 4],
-    '3': [4],
+    '3': [4], // 3 -> 4 means state 4 always follows 3 or 1/1 probability
     '4': [5],
     '5': [5, 4, 1, 0],
     '6': [2, 2, 2, 3, 3],
@@ -341,41 +421,51 @@ const G = {
 const mc = new MarkovChain(G, NOTES);
 ```
 
-(Not using adjacency matrices for code readability, but they can also be used.)
-
 ---
 
-# Markov Chain of Chords
+## Markov Chain of Chords
 
 ```javascript
-var CHORDS = [];
+const CHORDS = ['C maj', 'D min', 'E min', 'F maj', 'G maj', 'A min', 'B dim'];
 
-var G = {
-    '0': [1, 1, 0, 3, 4, 5, 6],
-    '1': [0, 0, 2, 3],
-    '2': [1, 3, 4],
-    '3': [4],
-    '4': [5],
-    '5': [5, 4, 1, 0],
-    '6': [2, 2, 2, 3, 3],
+// Favors I <-> IV, VI -> I cadences
+const G = {
+    '0': [3, 3, 3, 5],
+    '1': [2, 5],
+    '2': [3],
+    '3': [4, 4, 4, 1, 1],
+    '4': [0, 0, 0, 5],
+    '5': [1, 6],
+    '6': [4],
 };
+
+const mc = new MarkovChain(G, CHORDS);
 ```
 
 ---
 
-# Markov Chain of Snare Patterns
+## Markov Chain of Rhythm Patterns
 
 ```javascript
-var SNARES = [];
+const M = 96; // MIDI Ticks in a measure
 
-var G = {
-    '0': [1, 1, 0, 3, 4, 5, 6],
-    '1': [0, 0, 2, 3],
-    '2': [1, 3, 4],
-    '3': [4],
-    '4': [5],
-    '5': [5, 4, 1, 0],
-    '6': [2, 2, 2, 3, 3],
+const HATS = [
+    [M / 16, 4],
+    [M / 12, 3],
+    [M / 24, 6],
+    [M / 32, 4],
+    [M / 48, 6],
+    [M / 64, 8],
+];
+
+// Favors steady 1/16 notes -- common in hip hop
+const G = {
+    '0': [0, 0, 0, 0, 0, 0, 1, 2, 3, 4], // 0 -> 0 has 3/5 odds
+    '1': [0, 0, 0, 3],
+    '2': [0, 0, 0, 3],
+    '3': [2, 5],
+    '4': [2, 3, 4, 1],
+    '5': [3, 2, 4, 2, 2],
 };
 ```
 
@@ -384,7 +474,7 @@ var G = {
 iframeURL: /public/sqcr-demo/html/matrix-16x8.html
 iframeSelector: .matrix-16x8
 
-# Markov Drake
+## Markov Drake
 
 <iframe class="matrix-16x8" width="560" height="315" src="/blank.html" frameborder="0"></iframe>
 

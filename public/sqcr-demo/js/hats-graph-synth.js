@@ -134,17 +134,6 @@ network.fit(nodes.map(n => n.id));
 
 network.selectNodes([MC.peekID()]);
 
-// setInterval(() => {
-//     selectedNodeId = MC.nextID();
-//     network.selectNodes([selectedNodeId]);
-//     note = NOTES[selectedNodeId];
-//     note2 = NOTES[selectedNodeId + 2];
-//     note3 = NOTES[selectedNodeId + 4];
-//     const notes = [note, note2, note3];
-//     console.log('NOTES', notes, duration);
-//     synth.triggerAttackRelease(notes, duration);
-// }, duration);
-
 // SQCR Stuff
 setTempo(60);
 
@@ -166,12 +155,8 @@ h_counter = 0;
 playInst = (inst, note, dur = 50) => {
     let timer;
     try {
-        inst.triggerAttack(note);
-        timer = setTimeout(() => {
-            inst.triggerRelease(note);
-        }, dur);
+        inst.triggerAttackAndRelease(note, dur);
     } catch (e) {
-        clearTimeout(timer);
         console.log('Instrument error!', e.message);
     }
 };
