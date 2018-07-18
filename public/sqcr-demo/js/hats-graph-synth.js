@@ -155,7 +155,7 @@ h_counter = 0;
 playInst = (inst, note, dur = 50) => {
     let timer;
     try {
-        inst.triggerAttackAndRelease(note, dur);
+        inst.triggerAttack(note);
     } catch (e) {
         console.log('Instrument error!', e.message);
     }

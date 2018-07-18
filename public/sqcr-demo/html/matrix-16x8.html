@@ -8,15 +8,15 @@
 
     <link rel="stylesheet" type="text/css" media="all" href="/public/matrix-16x8/styles.css"></link>
     <link rel="stylesheet" type="text/css" media="all" href="/public/sqcr-demo/styles.css"></link>
+    <script src="/src/Markov.js"></script>
     <script src="/node_modules/webmidi/webmidi.min.js"></script>
     <script src="/node_modules/osc/dist/osc-browser.js"></script>
     <script src="/node_modules/tonal/build/transpiled.js"></script>
     <script src="/node_modules/tone/build/Tone.min.js"></script>
     <script src="/node_modules/sqcr/lib/standalone.js"></script>
     <script src="/public/sqcr-demo/sqcr-setup.js"></script>
-    <script src="/public/sqcr-demo/buffers/init.js"></script>
-    <script src="/public/sqcr-demo/buffers/synths.js"></script>
-    <script src="/public/sqcr-demo/buffers/loops.js"></script>
+    <script src="/public/sqcr-demo/js/matrix-16x8-init.js"></script>
+    <script src="/public/sqcr-demo/js/matrix-16x8-synths.js"></script>
     <script src="/public/sqcr-demo/visualizer.js"></script>
 </head>
 
@@ -172,9 +172,7 @@
             <a class="icon-link" href="javascript:sqcrToggle()">&#9654;</a>
         </div>
     </div>
-    <script>
-        window.initViz()
-    </script>
+    <script src="/public/sqcr-demo/js/matrix-16x8.js"></script>
 </body>
 
 </html>

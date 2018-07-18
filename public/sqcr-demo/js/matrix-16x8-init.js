@@ -28,14 +28,22 @@ expectedMS = ticks => sqcr.tickToMS() * ticks;
 next4 = nextOf(4);
 
 kicks = [
-    fmt('4040 0000 0004 0000'),
-    fmt('4000 0040 0040 0000'),
-    // fmt('4020 0000 4000 0000'),
-    // fmt('4020 0010 4020 0020'),
-    // fmt('4030 0020 4020 1000')
+    fmt('4000 0000 0040 0000'),
+    fmt('4020 0000 4000 0000'),
+    fmt('4023 0010 4020 0000'),
+    fmt('4030 0020 4020 1000'),
 ];
 
-kick_pattern = _sample(kicks);
+MC_KICKS = new MarkovChain(
+    {
+        '0': [0, 1, 0, 2],
+        '1': [0],
+        '2': [1, 0, 3],
+        '3': [0],
+    },
+    kicks,
+    0,
+);
 
 hats = [
     [M / 16, 4],
@@ -64,47 +72,30 @@ MC_HATS = new MarkovChain(
 h_counter = 0;
 
 snares = [
-    fmt('0000 4000 0000 4000'),
-    // fmt('0100 4000'),
-    // fmt('1000 4000'),
-    // fmt('0100 4100'),
-    // fmt('0001 3011'),
+    fmt('0000 4000'),
+    fmt('0100 4000'),
+    fmt('1000 4000'),
+    fmt('0100 4100'),
+    fmt('0001 3001'),
 ];
 
-snares_pattern = _sample(snares);
+MC_SNARES = new MarkovChain(
+    {
+        '0': [0, 0, 0, 0, 1, 2, 3],
+        '1': [0, 0, 1],
+        '2': [1, 0, 4, 3],
+        '3': [0],
+        '4': [0],
+    },
+    snares,
+    0,
+);
 
 LETTERS = 'ABCDEFG';
 
 KEY = ['F4', 'major'];
 
 makeScale = note => Tonal.scale(KEY[1]).map(Tonal.transpose(note));
-
-noteParse = note => {
-    const parts = note.split('');
-    let letter;
-    let isSharp = false;
-    let oct = 0;
-    // Has flat
-    if (parts.length === 3) {
-        let idx = LETTERS.indexOf(parts[0]);
-        if (idx === -1) throw new Error('Invalid note: ' + note);
-        else if (idx === 0) {
-            idx = LETTERS.length - 1;
-        } else {
-            idx = idx - 1;
-        }
-        letter = LETTERS[idx];
-        isSharp = true;
-        oct = parseInt(parts[2]);
-    } else {
-        letter = parts[0];
-        oct = parseInt(parts[1]);
-    }
-    return {
-        note: letter + (isSharp ? '#' : ''),
-        oct,
-    };
-};
 
 // Make an array of notes
 scale = [
@@ -113,8 +104,39 @@ scale = [
     ...makeScale('F5'),
     ...makeScale('F6'),
 ];
-chords = [0, 3, 4, 3, 2];
-chord = 0;
+
+chordNotesOf = deg => [
+    scale[deg],
+    scale[deg + 2],
+    scale[deg + 4],
+    scale[deg + 6],
+];
+
+chords = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+
+MC_CHORDS = new MarkovChain(
+    {
+        '0': [4],
+        '1': [7],
+        '2': [1],
+        '3': [4],
+        '4': [3, 0],
+        '7': [2, 5],
+        '5': [1, 6],
+        '6': [2],
+    },
+    chords,
+    0,
+);
+
+melody = [];
+
+for (let i = 0; i < 16; i++) {
+    melody.push(Math.round(Math.random() * 16) % 8);
+}
+
+console.log('melody', melody);
+
 notes = [0, 2, 4, 6];
 
 // Get MIDI outputs

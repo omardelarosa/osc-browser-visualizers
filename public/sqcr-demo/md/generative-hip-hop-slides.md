@@ -16,11 +16,9 @@ class: center, middle
 
 class: center, middle
 
-# Organized Sound Waves
+## Organized Sound Waves
 
-## (Technically)
-
-<img src="https://banner2.kisspng.com/20180406/wuw/kisspng-sine-wave-square-wave-waveform-sound-wave-5ac767ad185f97.7005774115230176450998.jpg" width=400 />
+<img src="https://images.vexels.com/media/users/3/145868/isolated/preview/395e11dc92884b535d825403bc12cb04-sound-wave-sharp-by-vexels.png" width=400 />
 
 ---
 
@@ -129,15 +127,23 @@ iframeSelector: .frame-808-geez
 
 ---
 
-class: center, middle
+class: middle, center
 
-# Harmony & Rhythm:
+# Rhythm, Harmony and Computation:
 
-### A few important terms before we get to hip hop
+#### A Brief History
 
 ---
 
-# Harmony
+class: center, middle
+
+# 2000 B.C. to 1980s:
+
+### Harmony, Rhythm and Music Theory:
+
+---
+
+### Harmony
 
 --
 
@@ -153,7 +159,7 @@ class: center, middle
 
 ---
 
-# Harmony
+### Harmony
 
 --
 
@@ -165,7 +171,7 @@ class: center, middle
 
 ---
 
-# Rhythm
+### Rhythm
 
 -   **beat** - a single unit of rhythm <img src="https://i.imgur.com/cpjlCGz.png" width=50 />
 
@@ -175,9 +181,7 @@ class: center, middle
 
 ---
 
-# Rhythm
-
-### Durations and Fractions
+### Rhythm & Durations as Fractions
 
 -   Durations are all described as fractions of a **measure**
 
@@ -195,9 +199,7 @@ class: center, middle
 
 ---
 
-# Rhythm
-
-### Durations and Fractions
+### Durations as Fractions
 
 -   Not all are multiples of 2.
 
@@ -205,7 +207,7 @@ class: center, middle
 
 -   Some interesting things happen when you mix up durations where the denominator of the fraction is a multiple of 3.
 
--   <img src="https://i.imgur.com/OuujOEg.png" width=300 />
+<img src="https://i.imgur.com/OuujOEg.png" width=300 />
 
 --
 
@@ -215,22 +217,36 @@ class: center, middle
 
 class: middle, center
 
-# Rhythm and Computation
+# 1980s to Now
 
-### Quantization and Escaping The Grid
+### Rhythm and Computation
 
 ---
 
 iframeURL: /public/sqcr-demo/html/808.html
 iframeSelector: .frame-808
 
-# Roland TR-808
+### Roland TR-808
+
+#### The classic drum machine of hip hop
 
 <iframe src="/blank.html" width="100%" height="100%" class="frame-808" frameborder="0"></iframe>
 
 ---
 
-# Rhythm as Code
+class: middle, center
+iframeURL: /public/sqcr-demo/html/akai.html
+iframeSelector: .frame-akai
+
+### Akai MPC-2000XL
+
+#### A classic sampler for hip hop production
+
+<iframe src="/blank.html" width="80%" height="80%" class="frame-akai" frameborder="0"></iframe>
+
+---
+
+# Rhythm and Computation
 
 #### Beat Grids
 
@@ -242,7 +258,7 @@ iframeSelector: .frame-808
 
 ---
 
-# Rhythm as Code
+# Rhythm and Computation
 
 #### Beat Grids as Code
 
